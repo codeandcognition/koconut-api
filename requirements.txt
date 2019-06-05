@@ -1,0 +1,10 @@
+Flask
+uwsgi
+re
+json
+secrets
+subprocess
+os
+flask_cors
+pandas
+numpy
