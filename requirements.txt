@@ -1,6 +1,5 @@
 Flask
 uwsgi
-re
 json
 secrets
 subprocess
