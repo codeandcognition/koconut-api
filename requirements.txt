@@ -3,3 +3,4 @@ Flask-Cors==3.0.7
 pandas==0.24.2
 numpy==1.16.2
 uwsgi
+gunicorn
