@@ -22,6 +22,9 @@ SELECT_MULTIPLE = "selectMultiple"
 CHECKBOX_QUESTION = "checkboxQuestion"
 MEMORY_TABLE = "memoryTable"
 
+@app.route("/") # TODO: remove. For dev/debugging only.
+def hello():
+    return "Hello Python service!"
 
 @app.route(f"/checker/{WRITE_CODE}", methods=["POST"])
 @cross_origin()
