@@ -1,0 +1,172 @@
+{
+  "isCorrect": false,
+  "exerciseID": "-LH_OAGDyCokBioKVd-r",
+  "exerciseIDs": [
+    "-LHtTLcZYq9HG7-5hA7o",
+    "-LIDqHrs-j4LijIs8nzg",
+    "-LIN493kRDPdiQKI5uQ6",
+    "-LI8QOtFfifzxyopSg9a",
+    "-LH_KNtUIv-mnBkZz2-k",
+    "-LH_OAGDyCokBioKVd-r",
+    "-LH_OAGDyCokBioKVd-r",
+    "-LI7eFZrIo7PKFLDo3uO",
+    "-LI7jxOzdaWOL-pL12lc",
+    "-LHu1IBEzIuSJHg6e6iz",
+    "-LI7Y47TE6sfVWM6mk0y",
+    "-LI8TtwNcCI3eRW9Qm1T",
+    "-LI8V0KDdN1jMltnrCJK",
+    "-LIMzZDOL9IHPoy8Usfz",
+    "-LII4_3hnAydP177H06u",
+    "-LIItTeMr_aqRg9e-1Bj",
+    "-LIIYPUAuVbTHQbf97IA",
+    "-LHeX8YcqjR6qdjkFfh6",
+    "-LI7eglW5ulpzrxa8Kns",
+    "-LHdzxfzAahw8MWKFSV_",
+    "-LHid2oYERT-n-i-0tkL",
+    "-LHeQczvZEEVsszLiWHU",
+    "-LHifx2aSN84XhSiLABp"
+  ],
+  "transfer": 0.3,
+  "itemParams": [
+    {
+      "guess": 0.05,
+      "slip": 0.1,
+      "eid": "-LHtTLcZYq9HG7-5hA7o",
+      "concept": "arithmeticOperators"
+    },
+    {
+      "guess": 0.05,
+      "slip": 0.15,
+      "eid": "-LIDqHrs-j4LijIs8nzg",
+      "concept": "arithmeticOperators"
+    },
+    {
+      "guess": 0.01,
+      "slip": 0.02,
+      "eid": "-LIN493kRDPdiQKI5uQ6",
+      "concept": "conditionals"
+    },
+    {
+      "guess": 0.01,
+      "slip": 0.2,
+      "eid": "-LI8QOtFfifzxyopSg9a",
+      "concept": "conditionals"
+    },
+    {
+      "guess": 0.05,
+      "slip": 0.15,
+      "eid": "-LH_KNtUIv-mnBkZz2-k",
+      "concept": "dataTypes"
+    },
+    {
+      "guess": 0.15,
+      "slip": 0.1,
+      "eid": "-LH_OAGDyCokBioKVd-r",
+      "concept": "dataTypes"
+    },
+    {
+      "guess": 0.15,
+      "slip": 0.1,
+      "eid": "-LH_OAGDyCokBioKVd-r",
+      "concept": "dataTypes"
+    },
+    {
+      "guess": 0.1,
+      "slip": 0.15,
+      "eid": "-LI7eFZrIo7PKFLDo3uO",
+      "concept": "digitProcessing"
+    },
+    {
+      "guess": 0.01,
+      "slip": 0.2,
+      "eid": "-LI7jxOzdaWOL-pL12lc",
+      "concept": "digitProcessing"
+    },
+    {
+      "guess": 0.1,
+      "slip": 0.15,
+      "eid": "-LHu1IBEzIuSJHg6e6iz",
+      "concept": "findMaxMin"
+    },
+    {
+      "guess": 0.01,
+      "slip": 0.2,
+      "eid": "-LI7Y47TE6sfVWM6mk0y",
+      "concept": "findMaxMin"
+    },
+    {
+      "guess": 0.1,
+      "slip": 0.15,
+      "eid": "-LI8TtwNcCI3eRW9Qm1T",
+      "concept": "floatEquality"
+    },
+    {
+      "guess": 0.01,
+      "slip": 0.2,
+      "eid": "-LI8V0KDdN1jMltnrCJK",
+      "concept": "floatEquality"
+    },
+    {
+      "guess": 0.1,
+      "slip": 0.05,
+      "eid": "-LIMzZDOL9IHPoy8Usfz",
+      "concept": "printStatements"
+    },
+    {
+      "guess": 0.05,
+      "slip": 0.15,
+      "eid": "-LII4_3hnAydP177H06u",
+      "concept": "printStatements"
+    },
+    {
+      "guess": 0.05,
+      "slip": 0.1,
+      "eid": "-LIItTeMr_aqRg9e-1Bj",
+      "concept": "relationalOperators"
+    },
+    {
+      "guess": 0.01,
+      "slip": 0.15,
+      "eid": "-LIIYPUAuVbTHQbf97IA",
+      "concept": "relationalOperators"
+    },
+    {
+      "guess": 0.1,
+      "slip": 0.2,
+      "eid": "-LHeX8YcqjR6qdjkFfh6",
+      "concept": "variableSwap"
+    },
+    {
+      "guess": 0.1,
+      "slip": 0.15,
+      "eid": "-LI7eglW5ulpzrxa8Kns",
+      "concept": "variableSwap"
+    },
+    {
+      "guess": 0.2,
+      "slip": 0.05,
+      "eid": "-LHdzxfzAahw8MWKFSV_",
+      "concept": "variables"
+    },
+    {
+      "guess": 0.15,
+      "slip": 0.1,
+      "eid": "-LHid2oYERT-n-i-0tkL",
+      "concept": "variables"
+    },
+    {
+      "guess": 0.1,
+      "slip": 0.15,
+      "eid": "-LHeQczvZEEVsszLiWHU",
+      "concept": "variables"
+    },
+    {
+      "guess": 0.05,
+      "slip": 0.1,
+      "eid": "-LHifx2aSN84XhSiLABp",
+      "concept": "variables"
+    }
+  ],
+  "readOrWrite": true,
+  "priorPknown": 0.33
+}
