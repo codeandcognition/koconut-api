@@ -11,7 +11,7 @@ The Koconut API runs on Python 3 (tested on 3.7.3, but 3.6 should work). All Pyt
 3. Run flask with the following command: `flask run`. You should see a response specifying that Flask is serving the app.
 4. To verify the app is running, go to [127.0.0.1:5000](127.0.0.1:5000) and see a very exciting "Hello python service!" message. You should also see a 200 response in your console where Flask is running.
 
-To do something more interesting, execute a POST request (e.g w/ Postman) to the /bkt endpoint (127.0.0.1:5000/bkt) with the JSON object in [example_bkt_data.json](https://github.com/codeandcognition/koconut-api/blob/master/example_data/example_bkt_data.json) in the body of the request. After doing that, you should see another 200 response on your console and a request body which includes a "pkNew" attribute being set ot 0.3383...
+To do something more interesting, let's execute a POST request (e.g w/ [Postman](https://www.getpostman.com/))! to the /bkt endpoint (127.0.0.1:5000/bkt) with the JSON object in [example_bkt_data.json](https://github.com/codeandcognition/koconut-api/blob/master/example_data/example_bkt_data.json) in the body of the request. After doing that, you should see another 200 response on your console and a request body which includes a "pkNew" attribute being set ot 0.3383...
 
 Congratulations! You've run the koconut API locally. 👏🏽
 
