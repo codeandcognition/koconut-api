@@ -6,7 +6,7 @@ import secrets
 import subprocess
 import os
 from flask_cors import cross_origin
-from .bkt import posterior_pknown, order_next_questions
+from .bkt import posterior_pknown, order_next_questions, filter_ordered_questions_by_concepts
 import pandas as pd
 
 JSON_TYPE = "application/json"
@@ -543,6 +543,9 @@ def bkt_handler():
     eid = req_body.get("exerciseID", None)
     transfer = req_body.get("transfer", None)
     item_params = req_body.get("itemParams", None)
+    target_concept = req_body.get("targetConcept", None)
+    concept_map = req_body.get("conceptMap", None)
+    
     item_params_df = None
     try:
         item_params_df = convert_item_params_to_dataframe(item_params)
@@ -555,7 +558,8 @@ def bkt_handler():
     if (is_correct is None) or (eid is None) \
             or (transfer is None) or (item_params_df is None) \
             or (prior_pknown is None) or (exercise_ids is None) \
-            or (read_or_write is None):
+            or (read_or_write is None) or (concept_map is None) \
+            or (target_concept is None):
         resp = Response("You are missing a field",
                         status=400, mimetype=TEXT_TYPE)
         return resp
@@ -572,6 +576,9 @@ def bkt_handler():
     # call a function to convert to list if so
     suggested_exercises = order_next_questions(
         exercise_ids, pk_new, item_params)
+    
+    suggested_exercises = filter_ordered_questions_by_concepts(suggested_exercises, item_params, 
+        target_concept, concept_map)
 
     results = {
         "pkNew": pk_new,

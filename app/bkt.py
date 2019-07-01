@@ -9,6 +9,8 @@ GUESS = 'guess'
 
 # terms
 CONCEPT = 'concept'
+CONCEPTS_STR = 'concepts'
+ADJ_MAT_STR = "adjMat"
 EID = "eid"
 UID = 'uid'
 STEP = 'step'
@@ -161,7 +163,7 @@ def order_next_questions(exercise_ids, pk, item_params, error = 0.0, penalty = 1
     
     # get max and min scores/p(correct)
     for eid in exercise_ids:
-        if eid in df_item_params:
+        if eid in list(df_item_params):
             params = df_item_params[df_item_params[EID] == eid].iloc[0]
             df_output.loc[df_output[EID] == eid, 'score'] = pcorrect(pk, params[SLIP], params[GUESS])
 
@@ -172,3 +174,98 @@ def order_next_questions(exercise_ids, pk, item_params, error = 0.0, penalty = 1
     df_output['diff'] = abs(df_output['score'] - target_score) * penalty
     
     return list(df_output.sort_values(by='diff')[EID])
+
+def filter_ordered_questions_by_concepts(questions, item_params, target_concept, concept_map, 
+                                         max_num_target=4, max_num_child=2, max_num_parent=2):
+    """
+    Given ordered concept, filter recommendations such that there are at most the max number 
+    for a target concept and parent & child concepts. 
+    Recommendations returned in order from most to least recommended.
+    
+    Parameters
+    ----------
+    questions: list
+        ordered list of exercise ids (strings) where index 0 is 1st (most recommended) exercise
+    item_params: pd.DataFrame
+        item parameters (eid, slip, guess, concept)
+    target_concept: string
+        
+    concept_map: dict
+        dictionary with 2 attributes: {concepts, adjMat}. 
+        adjMat is a list of lists which serves as an adjacency matrix for the concept map (directed graph)
+        concepts is a list of concepts where a concept at index i maps to the same index on adjMat
+    max_num_target: int
+        maximum number of recommendations for a target concept. Must be >=0
+    max_num_child: int
+        maximum number of recommendations for a child of the target concept. Must be >= 0
+    max_num_parent: int
+        maximum number of recommendations for a parent of the target concept. Must be >=0
+    """ 
+    
+    def get_parents(target, concept_map):
+        """
+        Given a target concept, return a list of concept IDs for parent concepts
+        """
+        parents = []
+        target_index = concept_map[CONCEPTS_STR].index(target)
+        for row in range(len(concept_map[ADJ_MAT_STR])): 
+            # get value in adjMat for each row at target concept's col
+            val = concept_map[ADJ_MAT_STR][row][target_index] 
+            if val > 0 and target_index != row: # don't care concepts are their own parents
+                print('parent found at {}, {}'.format(row, target_index)) # TODO remove
+                parents.append(concept_map[CONCEPTS_STR][row])
+        return parents
+
+    def get_children(target, concept_map):
+        """
+        Given a target concept, return a list of concept IDs for all child concepts
+        """
+        child_inds = []
+        target_index = concept_map[CONCEPTS_STR].index(target)
+        target_row = concept_map[ADJ_MAT_STR][target_index]
+        for ind in range(len(target_row)): # for each ind in row of adj mat
+            val = target_row[ind]
+            if(val>0 and ind != target_index): # don't care concept is child of itself
+                child_inds.append(ind)
+        return list(map(lambda ind: concept_map[CONCEPTS_STR][ind], child_inds))
+
+    def get_concept(eid, item_params):
+        """
+        Given a question/exercise eid (String) and item_params (pd.DataFrame),
+        return the concept that exercise corresponds to.
+
+        Assumes eid is unique (maps to exactly 1 row)
+        """
+
+        concept = item_params[item_params[EID]==eid][CONCEPT]
+
+        if len(concept) < 1: # TODO: make this filter "!= 1" to be more strict
+            raise Exception("Exercise ID does not map to any exercises. eid: {}".format(eid))
+        else:
+            return concept.iloc[0] # to get actual value
+    
+    df_item_params = pd.DataFrame.from_dict(item_params)
+
+    rec_eids = []
+
+    # add max_num_target questions of same concept to rec_eids
+    rec_target = list(filter(lambda q: get_concept(q, df_item_params) == target_concept, 
+                          questions))[:max_num_target]
+    print("For target, added {}".format(rec_target))
+    rec_eids += rec_target
+                
+
+    # add max_num_child questions of child concepts to rec_eids
+    rec_child = list(filter(lambda q: get_concept(q, df_item_params) in get_children(target_concept, concept_map), 
+                          questions))[:max_num_child]
+    print("For children, added {}".format(rec_child ))
+    rec_eids += rec_child
+
+    # add max_num_parent questions of parent concepts to rec_eids
+    rec_parent = list(filter(lambda q: get_concept(q, df_item_params) in get_parents(target_concept, concept_map), 
+                          questions))[:max_num_parent] 
+    print("For parents, added {}".format(rec_parent))
+    rec_eids += rec_parent                             
+
+    # want order of recommendations to stay same & only grab from top half of recommendations
+    return list(filter(lambda eid: eid in rec_eids, questions[:int(len(questions)/2)+1])) 
