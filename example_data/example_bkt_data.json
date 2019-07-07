@@ -1,6 +1,6 @@
 {
   "isCorrect": false,
-  "exerciseID": "-LH_OAGDyCokBioKVd-r",
+  "exerciseID": "-LHtTLcZYq9HG7-5hA7o",
   "exerciseIDs": [
     "-LHtTLcZYq9HG7-5hA7o",
     "-LIDqHrs-j4LijIs8nzg",
@@ -168,5 +168,27 @@
     }
   ],
   "readOrWrite": true,
-  "priorPknown": 0.33
+  "priorPknown": 0.33,
+  "targetConcept": "arithmeticOperators",
+  "read_or_write": "READ",
+  "conceptMap": {"concepts": ["arithmeticOperators",
+  "conditionals",
+  "printStatements",
+  "variables",
+  "dataTypes",
+  "digitProcessing",
+  "findMaxMin",
+  "floatEquality",
+  "variableSwap",
+  "relationalOperators"],
+ "adjMat": [[0, 0, 0, 0, 0, 1, 0, 1, 0, 0],
+  [0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 1, 0, 0, 1, 0],
+  [1, 0, 1, 1, 0, 0, 0, 0, 0, 1],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 1, 0, 0, 0, 0, 0, 1, 0, 0]]}
 }
