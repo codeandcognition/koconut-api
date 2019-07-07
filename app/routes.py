@@ -80,7 +80,7 @@ def writecode_handler():
         os.remove("temp/{}.py".format(filename_test_code))
         resp_body = {
             "pass": False,
-            "failMessage": "Unable to compile code"
+            "failMessage": "Unable to compile code. E1"
         }
         resp = Response(json.dumps(resp_body), status=200, mimetype=JSON_TYPE)
         return resp
@@ -381,7 +381,7 @@ def fill_blank_run_code(user_answer, test_code):
         os.remove("temp/{}.py".format(filename_test_code))
         resp_body = {
             "pass": False,
-            "failMessage": "Unable to compile code"
+            "failMessage": "Unable to compile code. E2"
         }
         return resp_body
     if test_output == user_answer:
@@ -493,7 +493,7 @@ def write_code_run_code(user_answer, test_code):
         os.remove("temp/{}.py".format(filename_test_code))
         resp_body = {
             "pass": False,
-            "failMessage": "Unable to compile code"
+            "failMessage": "Unable to compile code. E3"
         }
         return resp_body
     if test_output == user_output:
@@ -585,6 +585,7 @@ def bkt_handler():
         "suggestedExercises": suggested_exercises
     }
     resp = Response(json.dumps(results), status=200, mimetype=JSON_TYPE)
+    # print("pk changed from {} to {} (change of {})".format(prior_pknown, pk_new, (pk_new - prior_pknown))) # TODO remove
     return resp
 
 

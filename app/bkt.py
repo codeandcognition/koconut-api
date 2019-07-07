@@ -251,20 +251,20 @@ def filter_ordered_questions_by_concepts(questions, item_params, target_concept,
     # add max_num_target questions of same concept to rec_eids
     rec_target = list(filter(lambda q: get_concept(q, df_item_params) == target_concept, 
                           questions))[:max_num_target]
-    print("For target, added {}".format(rec_target))
+    # print("For target, added {}".format(rec_target))
     rec_eids += rec_target
                 
 
     # add max_num_child questions of child concepts to rec_eids
     rec_child = list(filter(lambda q: get_concept(q, df_item_params) in get_children(target_concept, concept_map), 
                           questions))[:max_num_child]
-    print("For children, added {}".format(rec_child ))
+    # print("For children, added {}".format(rec_child ))
     rec_eids += rec_child
 
     # add max_num_parent questions of parent concepts to rec_eids
     rec_parent = list(filter(lambda q: get_concept(q, df_item_params) in get_parents(target_concept, concept_map), 
                           questions))[:max_num_parent] 
-    print("For parents, added {}".format(rec_parent))
+    # print("For parents, added {}".format(rec_parent))
     rec_eids += rec_parent                             
 
     # want order of recommendations to stay same & only grab from top half of recommendations
