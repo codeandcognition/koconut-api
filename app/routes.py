@@ -436,7 +436,7 @@ def memorytable_check_correctness(user_answer, expected_answer):
 
     It does not incorporate any code checking at all, just string comparisons. 
     """
-    for variable, expected_values in expected_answer:
+    for variable, expected_values in expected_answer.items():
         if variable not in user_answer:
             return {
                 "pass": False,
