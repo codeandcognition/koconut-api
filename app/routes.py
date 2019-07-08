@@ -22,6 +22,8 @@ SELECT_MULTIPLE = "selectMultiple"
 CHECKBOX_QUESTION = "checkboxQuestion"
 MEMORY_TABLE = "memoryTable"
 
+TEMP_DIR = "/tmp"
+
 @app.route("/") # TODO: remove. For dev/debugging only.
 def hello():
     return "Hello Python service!"
@@ -53,8 +55,8 @@ def writecode_handler():
     filename_test_code = secrets.token_urlsafe(16)
 
     # Put code into those temp files
-    file_user_answer = open("temp/{}.py".format(filename_user_answer), "w")
-    file_test_code = open("temp/{}.py".format(filename_test_code), "w")
+    file_user_answer = open("{}/{}.py".format(TEMP_DIR, filename_user_answer), "w")
+    file_test_code = open("{}/{}.py".format(TEMP_DIR, filename_test_code), "w")
     file_user_answer.write(user_answer)
     file_test_code.write(test_code)
 
@@ -66,18 +68,18 @@ def writecode_handler():
     user_output = ""
     test_output = ""
     try:
-        user_output = subprocess.check_output(["python", "temp/{}.py".format(filename_user_answer)],
+        user_output = subprocess.check_output(["python", "{}/{}.py".format(TEMP_DIR, filename_user_answer)],
                                               universal_newlines=True)
-        test_output = subprocess.check_output(["python", "temp/{}.py".format(filename_test_code)],
+        test_output = subprocess.check_output(["python", "{}/{}.py".format(TEMP_DIR, filename_test_code)],
                                               universal_newlines=True)
 
         # remove the files
-        os.remove("temp/{}.py".format(filename_user_answer))
-        os.remove("temp/{}.py".format(filename_test_code))
+        os.remove("{}/{}.py".format(TEMP_DIR, filename_user_answer))
+        os.remove("{}/{}.py".format(TEMP_DIR, filename_test_code))
     except subprocess.CalledProcessError as exc:
         # if there is an error, remove the files and then fail because of an error
-        os.remove("temp/{}.py".format(filename_user_answer))
-        os.remove("temp/{}.py".format(filename_test_code))
+        os.remove("{}/{}.py".format(TEMP_DIR, filename_user_answer))
+        os.remove("{}/{}.py".format(TEMP_DIR, filename_test_code))
         resp_body = {
             "pass": False,
             "failMessage": "Unable to compile code. E1"
@@ -265,6 +267,9 @@ def table_handler():
                 # in the future to incorporate different functionality
                 actual_answer = question["answer"]
                 user_answer = answers[i][j]
+                print("\nanswers: (i = {}, j = {})".format(i,j)) # TODO remove
+                print(answers)
+                print("====")
                 correctness = multiple_choice_question_check_correctness(
                     actual_answer, user_answer)
                 if correctness:
@@ -348,6 +353,8 @@ def multiple_choice_question_check_correctness(actual_answer, user_answer):
     Similar to fill_blank_question_check_correctness this method can be expanded to provide
     specialized responses per each wrong answer
     """
+    print(actual_answer)
+    print(user_answer) # TODO remove
     return actual_answer.strip() == user_answer.strip()
 
 
@@ -362,7 +369,7 @@ def fill_blank_run_code(user_answer, test_code):
     filename_test_code = secrets.token_urlsafe(16)
 
     # Put code into those temp files
-    file_test_code = open("temp/{}.py".format(filename_test_code), "w")
+    file_test_code = open("{}/{}.py".format(TEMP_DIR, filename_test_code), "w")
     file_test_code.write(test_code)
 
     # Close the files
@@ -371,14 +378,14 @@ def fill_blank_run_code(user_answer, test_code):
     # Check the std output of all files
     test_output = ""
     try:
-        test_output = subprocess.check_output(["python", "temp/{}.py".format(filename_test_code)],
+        test_output = subprocess.check_output(["python", "{}/{}.py".format(TEMP_DIR, filename_test_code)],
                                               universal_newlines=True)
 
         # remove the files
-        os.remove("temp/{}.py".format(filename_test_code))
+        os.remove("{}/{}.py".format(TEMP_DIR, filename_test_code))
     except subprocess.CalledProcessError as exc:
         # if there is an error, remove the files and then fail because of an error
-        os.remove("temp/{}.py".format(filename_test_code))
+        os.remove("{}/{}.py".format(TEMP_DIR, filename_test_code))
         resp_body = {
             "pass": False,
             "failMessage": "Unable to compile code. E2"
@@ -466,8 +473,8 @@ def write_code_run_code(user_answer, test_code):
     filename_test_code = secrets.token_urlsafe(16)
 
     # Put code into those temp files
-    file_user_answer = open("temp/{}.py".format(filename_user_answer), "w")
-    file_test_code = open("temp/{}.py".format(filename_test_code), "w")
+    file_user_answer = open("{}/{}.py".format(TEMP_DIR, filename_user_answer), "w")
+    file_test_code = open("{}/{}.py".format(TEMP_DIR, filename_test_code), "w")
     file_user_answer.write(user_answer)
     file_test_code.write(test_code)
 
@@ -479,18 +486,18 @@ def write_code_run_code(user_answer, test_code):
     user_output = ""
     test_output = ""
     try:
-        user_output = subprocess.check_output(["python", "temp/{}.py".format(filename_user_answer)],
+        user_output = subprocess.check_output(["python", "{}/{}.py".format(TEMP_DIR, filename_user_answer)],
                                               universal_newlines=True)
-        test_output = subprocess.check_output(["python", "temp/{}.py".format(filename_test_code)],
+        test_output = subprocess.check_output(["python", "{}/{}.py".format(TEMP_DIR, filename_test_code)],
                                               universal_newlines=True)
 
         # remove the files
-        os.remove("temp/{}.py".format(filename_user_answer))
-        os.remove("temp/{}.py".format(filename_test_code))
+        os.remove("{}/{}.py".format(TEMP_DIR, filename_user_answer))
+        os.remove("{}/{}.py".format(TEMP_DIR, filename_test_code))
     except subprocess.CalledProcessError as exc:
         # if there is an error, remove the files and then fail because of an error
-        os.remove("temp/{}.py".format(filename_user_answer))
-        os.remove("temp/{}.py".format(filename_test_code))
+        os.remove("{}/{}.py".format(TEMP_DIR, filename_user_answer))
+        os.remove("{}/{}.py".format(TEMP_DIR, filename_test_code))
         resp_body = {
             "pass": False,
             "failMessage": "Unable to compile code. E3"

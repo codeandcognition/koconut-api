@@ -212,7 +212,7 @@ def filter_ordered_questions_by_concepts(questions, item_params, target_concept,
             # get value in adjMat for each row at target concept's col
             val = concept_map[ADJ_MAT_STR][row][target_index] 
             if val > 0 and target_index != row: # don't care concepts are their own parents
-                print('parent found at {}, {}'.format(row, target_index)) # TODO remove
+                # print('parent found at {}, {}'.format(row, target_index)) # TODO remove
                 parents.append(concept_map[CONCEPTS_STR][row])
         return parents
 
