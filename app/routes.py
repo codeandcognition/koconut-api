@@ -448,8 +448,9 @@ def memorytable_check_correctness(user_answer, expected_answer):
                 "pass": False,
                 "failMessage": f"Length of expected values for {variable} is different."
             }
-        for idx, expected_value in expected_values:
+        for idx in range(len(expected_values)):
             user_value = user_values[idx]
+            expected_value = expected_values[idx]
             if expected_value.strip() != user_value.strip():
                 return {
                     "pass": False,
@@ -458,7 +459,6 @@ def memorytable_check_correctness(user_answer, expected_answer):
     return {
         "pass": True
     }
-
 
 def write_code_run_code(user_answer, test_code):
     # Create random hashes for each temp file for no overlap
