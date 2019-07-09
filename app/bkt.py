@@ -268,4 +268,7 @@ def filter_ordered_questions_by_concepts(questions, item_params, target_concept,
     rec_eids += rec_parent                             
 
     # want order of recommendations to stay same & only grab from top half of recommendations
-    return list(filter(lambda eid: eid in rec_eids, questions[:int(len(questions)/2)+1])) 
+    # return list(filter(lambda eid: eid in rec_eids, questions[:int(len(questions)/2)+1])) 
+
+    # want order of recommendations to stay same
+    return list(filter(lambda eid: eid in rec_eids, questions)) 
