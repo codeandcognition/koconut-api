@@ -16,4 +16,6 @@ To do something more interesting, let's execute a POST request (e.g w/ [Postman]
 Congratulations! You've run the koconut API locally. 👏🏽
 
 ## Deploying on Heroku
+Heroku is set up to automatically deploy any new code pushed to the master branch to [codeitz.herokuapp.com](https://codeitz.herokuapp.com).
+
 The Procfile is already setup to use gunicorn, so this code should just be able to be deployed to Heroku. After a successful deployment, verify that `/` and `/bkt` endpoints work (just as was done in running API locally).
