@@ -21,6 +21,7 @@ TABLE = "table"
 SELECT_MULTIPLE = "selectMultiple"
 CHECKBOX_QUESTION = "checkboxQuestion"
 MEMORY_TABLE = "memoryTable"
+EID = "eid"
 
 TEMP_DIR = "/tmp"
 
@@ -581,15 +582,17 @@ def bkt_handler():
 
     # TODO: This may be returned as an un-serializable object (Series), will have to
     # call a function to convert to list if so
-    suggested_exercises = order_next_questions(
-        exercise_ids, pk_new, item_params)
+    df_ordered = order_next_questions(exercise_ids, pk_new, item_params)
     
-    suggested_exercises = filter_ordered_questions_by_concepts(suggested_exercises, item_params, 
-        target_concept, concept_map)
+    # get eids for exercises to recommend
+    selected = filter_ordered_questions_by_concepts(df_ordered[EID], item_params, target_concept, concept_map)
+
+    df_ordered = df_ordered[df_ordered[EID].isin(selected)]
 
     results = {
         "pkNew": pk_new,
-        "suggestedExercises": suggested_exercises
+        "exerciseInfo": df_ordered.reset_index().to_json(),
+        "suggestedExercises": list(df_ordered[EID]) # don't actually need to pass this (b/c included in exerciseInfo), but convinent & reverse-compatiable
     }
     resp = Response(json.dumps(results), status=200, mimetype=JSON_TYPE)
     # print("pk changed from {} to {} (change of {})".format(prior_pknown, pk_new, (pk_new - prior_pknown))) # TODO remove

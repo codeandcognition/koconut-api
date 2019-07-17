@@ -148,6 +148,7 @@ def order_next_questions(exercise_ids, pk, item_params, error = 0.0, penalty = 1
     """
     Order questions based on "most answerable." 
     Exercise IDs and probability of known must be of same concept, either read or write.
+    Returns dataframe (col: {eid, score, diff, dist}) ordered by lowest distance (dist)
     
     Parameters
     ----------
@@ -163,7 +164,7 @@ def order_next_questions(exercise_ids, pk, item_params, error = 0.0, penalty = 1
     
     # get max and min scores/p(correct)
     for eid in exercise_ids:
-        if eid in list(df_item_params):
+        if eid in list(df_item_params[EID]):
             params = df_item_params[df_item_params[EID] == eid].iloc[0]
             df_output.loc[df_output[EID] == eid, 'score'] = pcorrect(pk, params[SLIP], params[GUESS])
 
@@ -171,9 +172,11 @@ def order_next_questions(exercise_ids, pk, item_params, error = 0.0, penalty = 1
     max_score = max(df_output['score'])
     target_score = min_score + ((max_score - min_score) * (1 - pk + error))
     
-    df_output['diff'] = abs(df_output['score'] - target_score) * penalty
-    
-    return list(df_output.sort_values(by='diff')[EID])
+    df_output['diff'] = (target_score - df_output['score']) * penalty
+    df_output['dist'] = abs(df_output['diff'])
+
+    return df_output.sort_values(by = 'dist')    
+#     return list(df_output.sort_values(by='diff')[EID])
 
 def filter_ordered_questions_by_concepts(questions, item_params, target_concept, concept_map, 
                                          max_num_target=4, max_num_child=2, max_num_parent=2):
