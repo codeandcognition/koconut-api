@@ -178,6 +178,7 @@ def order_next_questions(exercise_ids, pk, item_params, error = 0.0, penalty = 1
     return df_output.sort_values(by = 'dist')    
 #     return list(df_output.sort_values(by='diff')[EID])
 
+# TODO: add consideration for sibblings
 def filter_ordered_questions_by_concepts(questions, item_params, target_concept, concept_map, 
                                          max_num_target=4, max_num_child=2, max_num_parent=2):
     """
