@@ -447,13 +447,13 @@ def memorytable_check_correctness(user_answer, expected_answer):
         if variable not in user_answer:
             return {
                 "pass": False,
-                "failMessage": f"Expected variable {variable} not provided."
+                "failMessage": f"Expected variable '{variable}' not provided."
             }
         user_values = user_answer[variable]
         if len(expected_values) != len(user_values):
             return {
                 "pass": False,
-                "failMessage": f"Length of expected values for {variable} is different."
+                "failMessage": f"Length of expected values for '{variable}' is different."
             }
         for idx in range(len(expected_values)):
             user_value = user_values[idx]
@@ -461,7 +461,7 @@ def memorytable_check_correctness(user_answer, expected_answer):
             if expected_value.strip() != user_value.strip():
                 return {
                     "pass": False,
-                    "failMessage": f"Values for {variable} are incorrect."
+                    "failMessage": f"Values for '{variable}' are incorrect."
                 }
     return {
         "pass": True
