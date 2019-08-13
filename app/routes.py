@@ -448,13 +448,13 @@ def memorytable_check_correctness(user_answer, expected_answer):
         if variable not in user_answer:
             return {
                 "pass": False,
-                "failMessage": f"Expected variable {variable} not provided."
+                "failMessage": f"Expected variable '{variable}' not provided."
             }
         user_values = user_answer[variable]
         if len(expected_values) != len(user_values):
             return {
                 "pass": False,
-                "failMessage": f"Length of expected values for {variable} is different."
+                "failMessage": f"Length of expected values for '{variable}' is different."
             }
         for idx in range(len(expected_values)):
             user_value = user_values[idx]
@@ -462,7 +462,7 @@ def memorytable_check_correctness(user_answer, expected_answer):
             if expected_value.strip() != user_value.strip():
                 return {
                     "pass": False,
-                    "failMessage": f"Values for {variable} are incorrect."
+                    "failMessage": f"Values for '{variable}' are incorrect."
                 }
     return {
         "pass": True
@@ -530,7 +530,11 @@ def is_req_not_json_type(request):
 
 @app.route("/bkt", methods=["POST"])
 @cross_origin()
-def bkt_handler():
+def bkt_handler(NUM_TOP_RECS=2, NUM_RELATED_RECS=2):
+    """
+    NUM_TOP_RECS: Number of recommendations
+    NUM_RELATED_RECS: Number of recommendations to get from related concepts (from target, its child or parents)
+    """
     # Make sure is POST request
     if request.method != "POST":
         resp = Response("Must be a POST request",
@@ -584,10 +588,14 @@ def bkt_handler():
     # call a function to convert to list if so
     df_ordered = order_next_questions(exercise_ids, pk_new, item_params)
     
-    # get eids for exercises to recommend
-    selected = filter_ordered_questions_by_concepts(df_ordered[EID], item_params, target_concept, concept_map)
+    # get eids for exercises to recommend (getting recommendations based on hierarchical relationship)
+    eid_related = filter_ordered_questions_by_concepts(df_ordered[EID], item_params, target_concept, concept_map)
+    eid_top_n = df_ordered.reset_index().iloc[range(0,NUM_TOP_RECS), :] # get top recs overall
 
-    df_ordered = df_ordered[df_ordered[EID].isin(selected)]
+    rec_eids = list(eid_top_n[EID]) + eid_related[0:NUM_RELATED_RECS] # merge list of eids that are top N, top N related to concept
+    rec_eids = list(dict.fromkeys(rec_eids)) # remove duplicates
+    
+    df_ordered = df_ordered[df_ordered[EID].isin(rec_eids)]
 
     results = {
         "pkNew": pk_new,
