@@ -8,6 +8,7 @@ The Koconut API runs on Python 3 (tested on 3.7.3, but 3.6 should work). All Pyt
 ## Running API locally
 1. Clone the repo.
 2. In the parent directory of the repo, type the following command: `export FLASK_APP=run_python.py`. This command sets the environment variable and tells Flask to run the run_python.py file on execution.
+    * optional: set the FLASK_ENV variable to development to have the server reload on change `export FLASK_ENV=development`
 3. Run flask with the following command: `flask run`. You should see a response specifying that Flask is serving the app.
 4. To verify the app is running, go to [127.0.0.1:5000](127.0.0.1:5000) and see a very exciting "Hello python service!" message. You should also see a 200 response in your console where Flask is running.
 
@@ -15,5 +16,10 @@ To do something more interesting, let's execute a POST request (e.g w/ [Postman]
 
 Congratulations! You've run the koconut API locally. 👏🏽
 
-## Deploying on Heroku
+# Deploying on Heroku
+Heroku is set up to automatically deploy any new code pushed to the master branch to [codeitz.herokuapp.com](https://codeitz.herokuapp.com).
+
 The Procfile is already setup to use gunicorn, so this code should just be able to be deployed to Heroku. After a successful deployment, verify that `/` and `/bkt` endpoints work (just as was done in running API locally).
+
+# Resources
+* [Flask dev server](http://flask.pocoo.org/docs/1.0/server/): for local deployment on Flask
