@@ -269,9 +269,6 @@ def table_handler():
                 # in the future to incorporate different functionality
                 actual_answer = question["answer"]
                 user_answer = answers[i][j]
-                print("\nanswers: (i = {}, j = {})".format(i,j)) # TODO remove
-                print(answers)
-                print("====")
                 correctness = multiple_choice_question_check_correctness(
                     actual_answer, user_answer)
                 if correctness:
@@ -355,8 +352,6 @@ def multiple_choice_question_check_correctness(actual_answer, user_answer):
     Similar to fill_blank_question_check_correctness this method can be expanded to provide
     specialized responses per each wrong answer
     """
-    print(actual_answer)
-    print(user_answer) # TODO remove
     return actual_answer.strip() == user_answer.strip()
 
 
