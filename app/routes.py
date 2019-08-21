@@ -8,6 +8,7 @@ import os
 from flask_cors import cross_origin
 from .bkt import posterior_pknown, order_next_questions, filter_ordered_questions_by_concepts
 import pandas as pd
+from .helpers import parse_traceback
 
 JSON_TYPE = "application/json"
 TEXT_TYPE = "text/plain"
@@ -68,34 +69,34 @@ def writecode_handler():
     # Check the std output of all files
     user_output = ""
     test_output = ""
-    try:
-        user_output = subprocess.check_output(["python", "{}/{}.py".format(TEMP_DIR, filename_user_answer)],
-                                              universal_newlines=True)
-        test_output = subprocess.check_output(["python", "{}/{}.py".format(TEMP_DIR, filename_test_code)],
-                                              universal_newlines=True)
+    user_output = subprocess.run(["python", "{}/{}.py".format(TEMP_DIR, filename_user_answer)],
+                                            capture_output=True,
+                                            universal_newlines=True)                                             
+    test_output = subprocess.run(["python", "{}/{}.py".format(TEMP_DIR, filename_test_code)],
+                                            capture_output=True,
+                                            universal_newlines=True)
 
-        # remove the files
-        os.remove("{}/{}.py".format(TEMP_DIR, filename_user_answer))
-        os.remove("{}/{}.py".format(TEMP_DIR, filename_test_code))
-    except subprocess.CalledProcessError as exc:
-        # if there is an error, remove the files and then fail because of an error
-        os.remove("{}/{}.py".format(TEMP_DIR, filename_user_answer))
-        os.remove("{}/{}.py".format(TEMP_DIR, filename_test_code))
+    os.remove("{}/{}.py".format(TEMP_DIR, filename_user_answer))
+    os.remove("{}/{}.py".format(TEMP_DIR, filename_test_code))
+        
+    # error condition
+    if user_output.returncode != 0 or test_output.returncode != 0: # returncode != 0 => error
         resp_body = {
             "pass": False,
-            "failMessage": "Unable to compile code. E1"
+            "failMessage": "Looks like there is an error in the code you wrote. Here's what the computer said:\n\n \"{}\"".format(parse_traceback(user_output.stderr))
         }
         resp = Response(json.dumps(resp_body), status=200, mimetype=JSON_TYPE)
         return resp
-    if test_output == user_output:
+    if test_output.stdout == user_output.stdout:
         resp_body = {
             "pass": True
         }
         resp = Response(json.dumps(resp_body), status=200, mimetype=JSON_TYPE)
         return resp
     expected, got = ("", "")
-    split_user_output = user_output.split("\n")
-    split_test_output = test_output.split("\n")
+
+    split_user_output = user_output.stdout.split("\n")
+    split_test_output = test_output.stdout.split("\n")
     for idx, line in enumerate(split_test_output):
         if split_user_output[idx] != line:
             expected = line
@@ -268,9 +269,6 @@ def table_handler():
                 # in the future to incorporate different functionality
                 actual_answer = question["answer"]
                 user_answer = answers[i][j]
-                print("\nanswers: (i = {}, j = {})".format(i,j)) # TODO remove
-                print(answers)
-                print("====")
                 correctness = multiple_choice_question_check_correctness(
                     actual_answer, user_answer)
                 if correctness:
@@ -354,8 +352,6 @@ def multiple_choice_question_check_correctness(actual_answer, user_answer):
     Similar to fill_blank_question_check_correctness this method can be expanded to provide
     specialized responses per each wrong answer
     """
-    print(actual_answer)
-    print(user_answer) # TODO remove
     return actual_answer.strip() == user_answer.strip()
 
 
@@ -378,7 +374,7 @@ def fill_blank_run_code(user_answer, test_code):
 
     # Check the std output of all files
     test_output = ""
-    try:
+    try: # TODO: change this to use subprocess.run() (like writecode_handler)
         test_output = subprocess.check_output(["python", "{}/{}.py".format(TEMP_DIR, filename_test_code)],
                                               universal_newlines=True)
 
@@ -486,7 +482,7 @@ def write_code_run_code(user_answer, test_code):
     # Check the std output of all files
     user_output = ""
     test_output = ""
-    try:
+    try: # TODO: change this to use subprocess.run() (like writecode_handler)
         user_output = subprocess.check_output(["python", "{}/{}.py".format(TEMP_DIR, filename_user_answer)],
                                               universal_newlines=True)
         test_output = subprocess.check_output(["python", "{}/{}.py".format(TEMP_DIR, filename_test_code)],
