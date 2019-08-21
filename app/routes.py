@@ -26,9 +26,9 @@ EID = "eid"
 
 TEMP_DIR = "/tmp"
 
-@app.route("/") # TODO: remove. For dev/debugging only.
-def hello():
-    return "Hello Python service!"
+# @app.route("/") # For dev/debugging only.
+# def hello():
+#     return "Hello Python service!"
 
 @app.route(f"/checker/{WRITE_CODE}", methods=["POST"])
 @cross_origin()
