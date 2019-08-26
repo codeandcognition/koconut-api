@@ -83,7 +83,7 @@ def writecode_handler():
     if user_output.returncode != 0 or test_output.returncode != 0: # returncode != 0 => error
         resp_body = {
             "pass": False,
-            "failMessage": "Looks like there is an error in the code you wrote. Here's what the computer said:\n\n \"{}\"".format(parse_traceback(user_output.stderr))
+            "failMessage": "Looks like there is an error in the code you wrote. Here's what the computer said:\n\n`{}`".format(parse_traceback(user_output.stderr))
         }
         resp = Response(json.dumps(resp_body), status=200, mimetype=JSON_TYPE)
         return resp
@@ -104,7 +104,7 @@ def writecode_handler():
             break
     resp_body = {
         "pass": False,
-        "failMessage": "Expected {} but got {}".format(expected, got)
+        "failMessage": "Expected `{}` but got `{}`".format(expected, got)
     }
     resp = Response(json.dumps(resp_body), status=200, mimetype=JSON_TYPE)
     return resp
@@ -173,7 +173,7 @@ def shortanswer_handler():
     if user_answer != expected_answer:
         resp_body = {
             "pass": False,
-            "failMessage": "Expected {} but got {}".format(expected_answer, user_answer)
+            "failMessage": "Expected `{}` but got `{}`".format(expected_answer, user_answer)
         }
         resp = Response(json.dumps(resp_body), status=200, mimetype=JSON_TYPE)
         return resp
@@ -256,7 +256,7 @@ def table_handler():
                     else:
                         results[i].append({
                             "pass": False,
-                            "failMessage": "Expected {} but got {}".format(actual_answer,
+                            "failMessage": "Expected `{}` but got `{}`".format(actual_answer,
                                                                            user_answer)
                         })
                 else:
@@ -278,7 +278,7 @@ def table_handler():
                 else:
                     results[i].append({
                         "pass": False,
-                        "failMessage": "Expected {} but got {}".format(actual_answer, user_answer)
+                        "failMessage": "Expected `{}` but got `{}`".format(actual_answer, user_answer)
                     })
             elif question["type"] == WRITE_CODE:
                 user_answer = answers[i][j]
