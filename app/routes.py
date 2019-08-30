@@ -8,7 +8,7 @@ import os
 from flask_cors import cross_origin
 from .bkt import posterior_pknown, order_next_questions, filter_ordered_questions_by_concepts
 import pandas as pd
-from .helpers import parse_traceback
+from .helpers import parse_traceback, parse_response
 
 JSON_TYPE = "application/json"
 TEXT_TYPE = "text/plain"
@@ -344,7 +344,7 @@ def fill_blank_question_check_correctness(actual_answer, user_answer):
     In the future this method can be expanded to provide specialized responses per each wrong answer
     but that is a reach goal
     """
-    return actual_answer.strip() == user_answer.strip()
+    return parse_response(actual_answer.strip()) == parse_response(user_answer.strip())
 
 
 def multiple_choice_question_check_correctness(actual_answer, user_answer):
@@ -352,7 +352,7 @@ def multiple_choice_question_check_correctness(actual_answer, user_answer):
     Similar to fill_blank_question_check_correctness this method can be expanded to provide
     specialized responses per each wrong answer
     """
-    return actual_answer.strip() == user_answer.strip()
+    return parse_response(actual_answer.strip()) == parse_response(user_answer.strip())
 
 
 def fill_blank_run_code(user_answer, test_code):
