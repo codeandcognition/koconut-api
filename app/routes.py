@@ -83,7 +83,8 @@ def writecode_handler():
     if user_output.returncode != 0 or test_output.returncode != 0: # returncode != 0 => error
         resp_body = {
             "pass": False,
-            "failMessage": "Looks like there is an error in the code you wrote. Here's what the computer said:\n\n`{}`".format(parse_traceback(user_output.stderr))
+            "failMessage": "Looks like there is an error in the code you wrote. Here's what the computer said:\n\n`{}`".format(parse_traceback(user_output.stderr)),
+            "failMessageFull": "`{}`".format(user_output.stderr)
         }
         resp = Response(json.dumps(resp_body), status=200, mimetype=JSON_TYPE)
         return resp
@@ -170,7 +171,7 @@ def shortanswer_handler():
         resp = Response(json.dumps(resp_body), status=200, mimetype=JSON_TYPE)
         return resp
 
-    if user_answer != expected_answer:
+    if parse_response(user_answer) != parse_response(expected_answer):
         resp_body = {
             "pass": False,
             "failMessage": "Expected `{}` but got `{}`".format(expected_answer, user_answer)
@@ -455,7 +456,7 @@ def memorytable_check_correctness(user_answer, expected_answer):
         for idx in range(len(expected_values)):
             user_value = user_values[idx]
             expected_value = expected_values[idx]
-            if expected_value.strip() != user_value.strip():
+            if parse_response(expected_value.strip()) != parse_response(user_value.strip()): # does not account for string or not
                 return {
                     "pass": False,
                     "failMessage": f"Values for '{variable}' are incorrect."
