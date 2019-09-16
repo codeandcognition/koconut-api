@@ -83,7 +83,8 @@ def writecode_handler():
     if user_output.returncode != 0 or test_output.returncode != 0: # returncode != 0 => error
         resp_body = {
             "pass": False,
-            "failMessage": "Looks like there is an error in the code you wrote. Here's what the computer said:\n\n`{}`".format(parse_traceback(user_output.stderr))
+            "failMessage": "Looks like there is an error in the code you wrote. Here's what the computer said:\n\n`{}`".format(parse_traceback(user_output.stderr)),
+            "failMessageFull": "`{}`".format(user_output.stderr)
         }
         resp = Response(json.dumps(resp_body), status=200, mimetype=JSON_TYPE)
         return resp
