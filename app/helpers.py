@@ -12,8 +12,10 @@ def parse_traceback(traceback):
 
 def parse_response(inp):
     """
-    Replace double quotes with single quotes. 
-    If wrapped in single quotes (or otherwise e.g. wrapped in inconsistent quotes), return unchanged.
+    Makes comparison of inp (string) slightly more robust. Useful for user-inputted values
+
+    - Turns all numbers into floats (to normalize trailing 0s). LOSS OF PRECISION IN CORRECTNESS B/C FLOAT EQUALITY CHECKED W/ ==
+    - Replace double quotes with single quotes. If wrapped in single quotes (or otherwise e.g. wrapped in inconsistent quotes), return unchanged.
     """
     # case: user inputs float w/ zero or many trailing 0s
     if(is_number(inp)):
