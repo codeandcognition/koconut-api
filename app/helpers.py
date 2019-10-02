@@ -10,13 +10,15 @@ def parse_traceback(traceback):
     else:
         return traceback
 
-def parse_response(inp):
+def parse_response(inp_raw):
     """
-    Makes comparison of inp (string) slightly more robust. Useful for user-inputted values
-
+    Makes comparison of inp slightly more robust. Useful for user-inputted values
+    - Converts input into string and strips whitespace
     - Turns all numbers into floats (to normalize trailing 0s). LOSS OF PRECISION IN CORRECTNESS B/C FLOAT EQUALITY CHECKED W/ ==
     - Replace double quotes with single quotes. If wrapped in single quotes (or otherwise e.g. wrapped in inconsistent quotes), return unchanged.
     """
+    inp = str(inp_raw).strip()
+
     # case: user inputs float w/ zero or many trailing 0s
     if(is_number(inp)):
         return float(inp)

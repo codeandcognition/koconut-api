@@ -345,7 +345,7 @@ def fill_blank_question_check_correctness(actual_answer, user_answer):
     In the future this method can be expanded to provide specialized responses per each wrong answer
     but that is a reach goal
     """
-    return parse_response(actual_answer.strip()) == parse_response(user_answer.strip())
+    return parse_response(actual_answer) == parse_response(user_answer)
 
 
 def multiple_choice_question_check_correctness(actual_answer, user_answer):
@@ -353,7 +353,7 @@ def multiple_choice_question_check_correctness(actual_answer, user_answer):
     Similar to fill_blank_question_check_correctness this method can be expanded to provide
     specialized responses per each wrong answer
     """
-    return parse_response(actual_answer.strip()) == parse_response(user_answer.strip())
+    return parse_response(actual_answer) == parse_response(user_answer)
 
 
 def fill_blank_run_code(user_answer, test_code):
@@ -456,7 +456,7 @@ def memorytable_check_correctness(user_answer, expected_answer):
         for idx in range(len(expected_values)):
             user_value = user_values[idx]
             expected_value = expected_values[idx]
-            if parse_response(expected_value.strip()) != parse_response(user_value.strip()): # does not account for string or not
+            if parse_response(expected_value) != parse_response(user_value): # does not account for string or not
                 return {
                     "pass": False,
                     "failMessage": f"Values for '{variable}' are incorrect."
